@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvxuj2tnallm8"]
+
+[ext_resource type="Texture2D" uid="uid://d0m4l36etdseb" path="res://cardimages/black.png" id="1_ylwwy"]
+[ext_resource type="Script" uid="uid://ccvmxc3ax3glu" path="res://Scripts/Card_Mechanics/card.gd" id="2_y5kxg"]
+
+[sub_resource type="Theme" id="Theme_rjlel"]
+default_base_scale = 0.14
+default_font_size = 50
+
+[node name="Sprite2D" type="Sprite2D"]
+texture = ExtResource("1_ylwwy")
+script = ExtResource("2_y5kxg")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_rjlel")
+
+[node name="Text" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -9.167
+anchor_top = -12.91
+anchor_right = 9.049
+anchor_bottom = 12.615
+offset_left = 39.68
+offset_top = 625.4
+offset_right = -30.96
+offset_bottom = -33.6
+text = "Rules Text"
+fit_content = true
+
+[node name="Class" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -9.167
+anchor_top = -12.91
+anchor_right = 9.049
+anchor_bottom = 12.615
+offset_left = 48.68
+offset_top = 533.4
+offset_right = -21.96
+offset_bottom = -406.6
+text = "Class"
+fit_content = true
+
+[node name="Cost" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -9.167
+anchor_top = -12.91
+anchor_right = 9.049
+anchor_bottom = 12.615
+offset_left = 39.68
+offset_top = 150.4
+offset_right = -611.96
+offset_bottom = -723.6
+text = "10
+10"
+fit_content = true
+
+[node name="Name" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -9.167
+anchor_top = -12.91
+anchor_right = 9.049
+anchor_bottom = 12.615
+offset_left = 41.68
+offset_top = 26.4
+offset_right = -28.96
+offset_bottom = -874.6
+text = "Name"
+fit_content = true

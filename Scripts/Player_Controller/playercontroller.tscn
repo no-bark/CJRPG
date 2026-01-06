@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://c4n4ruh1n32fl"]
+
+[ext_resource type="Script" uid="uid://y633swvucerc" path="res://Scripts/Player_Controller/PlayerController.gd" id="1_4oh11"]
+[ext_resource type="PackedScene" uid="uid://s6hgk603iua0" path="res://Scripts/Card_Mechanics/deck.tscn" id="2_xx2g2"]
+[ext_resource type="Texture2D" uid="uid://bmjs7hnplmro4" path="res://cardimages/page04.jpg" id="3_b4rd0"]
+[ext_resource type="PackedScene" uid="uid://bufoja4mrygrt" path="res://Scripts/Card_Mechanics/CardFactory.tscn" id="4_whji3"]
+[ext_resource type="PackedScene" uid="uid://ct66ktfyoo0in" path="res://Scripts/Counters/Counter.tscn" id="5_jix1u"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_4oh11")
+StartingDeck = Array[int]([16, 16, 16, 18, 18, 19, 19, 19, 22, 22, 22, 30, 30, 37, 37, 37, 63, 63, 63, 32, 32, 32, 42, 42, 42, 41, 41, 43, 43, 36])
+
+[node name="Deck" parent="." instance=ExtResource("2_xx2g2")]
+anchors_preset = -1
+anchor_right = 1.014
+anchor_bottom = 1.165
+offset_left = -41.0
+offset_top = 612.0
+offset_right = -1199.13
+offset_bottom = -132.92
+cardScale = Vector2(0.2, 0.2)
+backsideImage = ExtResource("3_b4rd0")
+
+[node name="Hand" parent="." instance=ExtResource("2_xx2g2")]
+offset_left = 165.0
+offset_top = 599.0
+offset_right = -977.0
+offset_bottom = -39.0
+cardScale = Vector2(0.3, 0.3)
+public = true
+active = true
+backsideImage = ExtResource("3_b4rd0")
+
+[node name="Decksize_Indicator" parent="Hand" index="0"]
+position = Vector2(992, 4)
+
+[node name="Discard" parent="." instance=ExtResource("2_xx2g2")]
+offset_left = 1114.0
+offset_top = 577.0
+offset_right = -28.0
+offset_bottom = -61.0
+cardScale = Vector2(0.2, 0.2)
+public = true
+backsideImage = ExtResource("3_b4rd0")
+
+[node name="CardFactory" parent="." instance=ExtResource("4_whji3")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(620, 320)
+zoom = Vector2(0.8, 0.8)
+
+[node name="Counter" parent="." instance=ExtResource("5_jix1u")]
+offset_left = -429.0
+offset_top = -252.0
+offset_right = -429.0
+offset_bottom = -252.0
+Starting_Value = 30
+
+[node name="Counter2" parent="." instance=ExtResource("5_jix1u")]
+offset_left = -59.0
+offset_top = -256.0
+offset_right = -59.0
+offset_bottom = -256.0
+Starting_Value = 50
+
+[node name="Counter3" parent="." instance=ExtResource("5_jix1u")]
+offset_left = 300.0
+offset_top = -256.0
+offset_right = 300.0
+offset_bottom = -256.0
+Starting_Value = 30
+
+[editable path="Deck"]
+[editable path="Hand"]
+[editable path="Discard"]

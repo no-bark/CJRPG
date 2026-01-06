@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct66ktfyoo0in"]
+
+[ext_resource type="Script" uid="uid://c248m884fbtar" path="res://Scripts/Counters/counter.gd" id="1_xdra0"]
+
+[node name="Counter" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xdra0")
+
+[node name="Increase_Button" type="Button" parent="."]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 39.0
+offset_right = 69.0
+offset_bottom = 31.0
+text = "+"
+
+[node name="Decrease_Button" type="Button" parent="."]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 39.0
+offset_top = 32.0
+offset_right = 69.0
+offset_bottom = 63.0
+text = "-"
+
+[node name="Value" type="Label" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 16.0
+offset_right = 19.0
+offset_bottom = 45.0
+text = "1"
+max_lines_visible = 1

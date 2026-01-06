@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://w6ggwx6j880b"]
+
+[ext_resource type="Script" uid="uid://4v07vcc6w4tb" path="res://Scripts/RulesEngine/rulesville_testrunner.gd" id="1_w8q3f"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="RulesVilleTestRunner" type="Node" parent="."]
+script = ExtResource("1_w8q3f")
+metadata/_custom_type_script = "uid://4v07vcc6w4tb"
