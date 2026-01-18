@@ -6,9 +6,6 @@ import threading
 import re
 
 GODOT_VER = '4.5-stable_win64'
-GODOT_EXE_DIR = os.path.realpath('../../godot/')
-GODOT_EXE = os.path.join(GODOT_EXE_DIR, 'Godot_v{0}/Godot_v{0}.exe'.format(GODOT_VER))
-GODOT_CONSOLE_EXE = os.path.join(GODOT_EXE_DIR, 'Godot_v{0}/Godot_v{0}_console.exe'.format(GODOT_VER))
 
 def script_paths(path):
     paths = []
@@ -90,6 +87,10 @@ if __name__ == '__main__':
     working_directory = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../'))
     prev_working_directory = os.getcwd()
     os.chdir(working_directory)
+
+    GODOT_EXE_DIR = os.path.realpath('../../godot/')
+    GODOT_EXE = os.path.join(GODOT_EXE_DIR, 'Godot_v{0}/Godot_v{0}.exe'.format(GODOT_VER))
+    GODOT_CONSOLE_EXE = os.path.join(GODOT_EXE_DIR, 'Godot_v{0}/Godot_v{0}_console.exe'.format(GODOT_VER))
 
     check_errors(working_directory)
 

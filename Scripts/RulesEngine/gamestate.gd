@@ -1,23 +1,5 @@
 class_name GameState extends Object
 
-class GS_CharacterRef:
-    var index: int
-
-    func _init(index: int):
-        self.index = index
-
-class GS_ZoneRef:
-    var index: int
-
-    func _init(index: int):
-        self.index = index
-
-class GS_CardRef:
-    var index: int
-
-    func _init(index: int):
-        self.index = index
-
 enum ZoneType {
     DECK,
     DISCARD,
@@ -25,17 +7,17 @@ enum ZoneType {
 }
 
 class GS_Zone:
-    var ref: GS_ZoneRef
+    var ref: GS_Ref.Zone
     var type: ZoneType
-    var cards: Array[GS_CardRef]
+    var cards: Array[GS_Ref.Card]
 
     func _init(type: ZoneType):
         self.type = type
 
 class GS_Card:
-    var ref: GS_CardRef
+    var ref: GS_Ref.Card
     var name: String
-    var zone: GS_ZoneRef
+    var zone: GS_Ref.Zone
 
 enum CharacterType {
     WARRIOR,
@@ -45,7 +27,7 @@ enum CharacterType {
 }
 
 class GS_Character:
-    var ref: GS_CharacterRef
+    var ref: GS_Ref.Character
 
     var faction: int
     var hp: int
@@ -57,20 +39,20 @@ var characters: Array[GS_Character]
 
 func _init(existing: GameState):
     if (existing == null):
-        create_zone(ZoneType.DECK)
-        create_zone(ZoneType.DISCARD)
-        create_zone(ZoneType.HAND)
+        _create_zone(ZoneType.DECK)
+        _create_zone(ZoneType.DISCARD)
+        _create_zone(ZoneType.HAND)
     else:
-         zones = existing.zones.duplicate(true)
-         cards = existing.zones.duplicate(true)
-         characters = existing.characters.duplicate()
+        zones = existing.zones.duplicate(true)
+        cards = existing.cards.duplicate(true)
+        characters = existing.characters.duplicate()
 
-func get_zone(ref: GS_ZoneRef) -> GS_Zone:
+func get_zone(ref: GS_Ref.Zone) -> GS_Zone:
     return zones[ref.index]
 
-func create_zone(zonetype: ZoneType) -> GS_ZoneRef:
+func _create_zone(zonetype: ZoneType) -> GS_Ref.Zone:
     var zone = GS_Zone.new(zonetype)
-    zone.ref = GS_ZoneRef.new(zones.size())
+    zone.ref = GS_Ref.Zone.new(zones.size())
 
     zones.append(zone)
 
@@ -83,12 +65,12 @@ func query_zones_by_type(type: ZoneType) -> GS_Zone:
 
     return null
 
-func get_card(ref: GS_CardRef) -> GS_Card:
+func get_card(ref: GS_Ref.Card) -> GS_Card:
     return cards[ref.index]
 
-func create_card(name: String, zone: GS_ZoneRef) -> GS_CardRef:
+func _create_card(name: String, zone: GS_Ref.Zone) -> GS_Ref.Card:
     var card = GS_Card.new()
-    card.ref = GS_CardRef.new(cards.size())
+    card.ref = GS_Ref.Card.new(cards.size())
     card.name = name
     card.zone = zone
 
@@ -99,14 +81,33 @@ func create_card(name: String, zone: GS_ZoneRef) -> GS_CardRef:
 
     return card.ref
 
-func get_character(ref: GS_CharacterRef) -> GS_Character:
+func get_character(ref: GS_Ref.Character) -> GS_Character:
     return characters[ref.index]
 
-func create_character() -> GS_CharacterRef:
+func _create_character() -> GS_Ref.Character:
     var character = GS_Character.new()
-    character.ref = GS_CharacterRef.new(characters.size())
+    character.ref = GS_Ref.Character.new(characters.size())
 
     characters.append(character)
 
     return character.ref
+
+func process_requests(requests: Array[GS_Request]) -> GameState:
+    var result: GameState = GameState.new(self)
+
+    for req in requests:
+        match req.type:
+            GS_Request.Type.CREATE_CARD:
+                result._create_card(req.name, req.zoneRef)
+
+            GS_Request.Type.CREATE_CHARACTER:
+                print("create character")
+
+            GS_Request.Type.PLAY_CARD:
+                var card = result.get_card(req.cardRef)
+                var def = CardLibrary.get_card(card.name)
+                for s in def.steps:
+                    s.call()
+
+    return result
 

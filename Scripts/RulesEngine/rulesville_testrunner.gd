@@ -1,22 +1,34 @@
 class_name RulesVilleTestRunner extends Node
 
-#var GameState = load("Scripts/RulesEngine/gamestate.gd")
-
 func _init():
     CardLibrary.init_library()
 
     var gs = load_deck0()
 
-    var ref = GameState.GS_CardRef.new(0)
-    var card = gs.get_card(ref)
-    var def = CardLibrary.get_card(card.name)
-    for s in def.steps:
-        s.call()
+    var requests: Array[GS_Request]
+    requests.append(GS_Request.new(
+        GS_Request.Type.PLAY_CARD,
+        "",
+        null,
+        GS_Ref.Card.new(0),
+        ))
+
+    gs = gs.process_requests(requests)
+
+	for e in gs.events:
+		pass
 
 func load_deck0() -> GameState:
     var gs = GameState.new(null)
 
-    gs.create_card("testcard0", GameState.ZoneType.DECK)
+    var requests: Array[GS_Request]
+    requests.append(GS_Request.new(
+        GS_Request.Type.CREATE_CARD,
+        "testcard0",
+        gs.query_zones_by_type(GameState.ZoneType.HAND).ref,
+        null,
+        ))
+
+    gs = gs.process_requests(requests)
 
     return gs
-    
