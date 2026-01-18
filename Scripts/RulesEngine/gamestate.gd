@@ -1,23 +1,18 @@
 class_name GameState extends Object
 
+enum GSTurnPhase {
+    START,
+    PLAY_CARD,
+    SELECT_TARGETS,
+    APPLY,
+    END,
+}
+
 enum ZoneType {
     DECK,
     DISCARD,
     HAND,
 }
-
-class GS_Zone:
-    var ref: GS_Ref.Zone
-    var type: ZoneType
-    var cards: Array[GS_Ref.Card]
-
-    func _init(type: ZoneType):
-        self.type = type
-
-class GS_Card:
-    var ref: GS_Ref.Card
-    var name: String
-    var zone: GS_Ref.Zone
 
 enum CharacterType {
     WARRIOR,
@@ -26,88 +21,152 @@ enum CharacterType {
     CLERIC
 }
 
-class GS_Character:
-    var ref: GS_Ref.Character
+class GSZone:
+    var ref: GSRef.Zone
+    var type: ZoneType
+    var cards: Array[GSRef.Card]
+
+    func _init(type: ZoneType):
+        self.type = type
+
+class GSCard:
+    var ref: GSRef.Card
+    var name: String
+    var zone: GSRef.Zone
+
+class GSCharacter:
+    var ref: GSRef.Character
 
     var faction: int
     var hp: int
     var mana: int
 
-var zones: Array[GS_Zone]
-var cards: Array[GS_Card]
-var characters: Array[GS_Character]
+class GSVars:
+    var loaded: bool
+    var turn: int
+    var phase: GSTurnPhase
+    var awaitingChoice: bool
+
+var vars: GSVars
+var zones: Array[GSZone]
+var cards: Array[GSCard]
+var characters: Array[GSCharacter]
 
 func _init(existing: GameState):
     if (existing == null):
+        vars = GSVars.new()
         _create_zone(ZoneType.DECK)
         _create_zone(ZoneType.DISCARD)
         _create_zone(ZoneType.HAND)
     else:
+        vars = existing.vars.duplicate(true)
         zones = existing.zones.duplicate(true)
         cards = existing.cards.duplicate(true)
         characters = existing.characters.duplicate()
 
-func get_zone(ref: GS_Ref.Zone) -> GS_Zone:
+func get_zone(ref: GSRef.Zone) -> GSZone:
     return zones[ref.index]
 
-func _create_zone(zonetype: ZoneType) -> GS_Ref.Zone:
-    var zone = GS_Zone.new(zonetype)
-    zone.ref = GS_Ref.Zone.new(zones.size())
+func _create_zone(zonetype: ZoneType) -> GSRef.Zone:
+    var zone = GSZone.new(zonetype)
+    zone.ref = GSRef.Zone.new(zones.size())
 
     zones.append(zone)
 
     return zone.ref
 
-func query_zones_by_type(type: ZoneType) -> GS_Zone:
+func query_zones_by_type(type: ZoneType) -> GSZone:
     for z in zones:
         if z.type == type:
             return z
 
     return null
 
-func get_card(ref: GS_Ref.Card) -> GS_Card:
+func get_card(ref: GSRef.Card) -> GSCard:
     return cards[ref.index]
 
-func _create_card(name: String, zone: GS_Ref.Zone) -> GS_Ref.Card:
-    var card = GS_Card.new()
-    card.ref = GS_Ref.Card.new(cards.size())
+func _create_card(name: String, zoneRef: GSRef.Zone) -> GSRef.Card:
+    var card = GSCard.new()
+    card.ref = GSRef.Card.new(cards.size())
     card.name = name
-    card.zone = zone
+    card.zone = zoneRef
 
     cards.append(card)
 
-    var _zone = get_zone(zone)
-    _zone.cards.append(card.ref)
+    var zone = get_zone(zoneRef)
+    zone.cards.append(card.ref)
 
     return card.ref
 
-func get_character(ref: GS_Ref.Character) -> GS_Character:
+func get_character(ref: GSRef.Character) -> GSCharacter:
     return characters[ref.index]
 
-func _create_character() -> GS_Ref.Character:
-    var character = GS_Character.new()
-    character.ref = GS_Ref.Character.new(characters.size())
+func _create_character() -> GSRef.Character:
+    var character = GSCharacter.new()
+    character.ref = GSRef.Character.new(characters.size())
 
     characters.append(character)
 
     return character.ref
 
-func process_requests(requests: Array[GS_Request]) -> GameState:
+func process_requests(user_requests: Array[GSRequest]) -> GameState:
     var result: GameState = GameState.new(self)
+    var requests: Array[GSRequest] = user_requests
 
-    for req in requests:
-        match req.type:
-            GS_Request.Type.CREATE_CARD:
-                result._create_card(req.name, req.zoneRef)
+    while true:
+        var wasLoaded: bool = result.vars.loaded
+        var done: bool = true
 
-            GS_Request.Type.CREATE_CHARACTER:
-                print("create character")
+        for req in requests:
+            match req.type:
+                GSRequest.Type.CREATE_CARD:
+                    result._create_card(req.name, req.zoneRef)
 
-            GS_Request.Type.PLAY_CARD:
-                var card = result.get_card(req.cardRef)
-                var def = CardLibrary.get_card(card.name)
-                for s in def.steps:
-                    s.call()
+                GSRequest.Type.CREATE_CHARACTER:
+                    print("create character")
+
+                GSRequest.Type.DONE_WITH_LOAD:
+                    result.vars.loaded = true
+
+                GSRequest.Type.MAKE_CHOICE:
+                    print("make choice")
+                    #var card = result.get_card(req.cardRef)
+                    #var def = CardLibrary.get_card(card.name)
+                    #for s in def.steps:
+                    #    s.call()
+
+        requests = []
+
+        if not wasLoaded and result.vars.loaded:
+            print("gamestate: done loading")
+            done = false
+
+        if not result.vars.awaitingChoice:
+            print("gamestate: advance phase")
+            done = false
+			result.vars.phase += 1
+			result.vars.awaitingChoice = false
+
+		match result.vars.phase:
+			GSTurnPhase.START:
+				print("gamestate begin: START")
+
+			GSTurnPhase.PLAY_CARD:
+				print("gamestate begin: PLAY_CARD")
+
+			GSTurnPhase.SELECT_TARGETS:
+				print("gamestate begin: SELECT_TARGETS")
+
+			GSTurnPhase.APPLY:
+				print("gamestate begin: APPLY")
+
+			GSTurnPhase.END:
+				print("gamestate begin: END")
+				result.vars.turn += 1
+				result.vars.phase = GSTurnPhase.START
+
+        if done:
+            break
 
     return result
 

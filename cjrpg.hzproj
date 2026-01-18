@@ -2,5 +2,5 @@
 // compile command requires running:
 //     pip install "gdtoolkit==4.*"
 
-compile=python -m gdtoolkit.linter.__main__ .
+compile=python -m gdtoolkit.linter.__main__ Scripts/RulesEngine
 has_compile_args=false

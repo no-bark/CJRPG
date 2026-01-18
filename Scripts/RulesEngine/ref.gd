@@ -1,4 +1,4 @@
-class_name GS_Ref extends Object
+class_name GSRef extends Object
 
 class Zone:
     var index: int

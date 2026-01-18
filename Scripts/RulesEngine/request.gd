@@ -1,24 +1,28 @@
-class_name GS_Request extends Object
+class_name GSRequest extends Object
 
 enum Type {
 	CREATE_CARD,
 	CREATE_CHARACTER,
-	PLAY_CARD,
+	DONE_WITH_LOAD,
+	MAKE_CHOICE,
 }
+
+var type: Type
+var name: String
+var index: int
+var zoneRef: GSRef.Zone
+var cardRef: GSRef.Card
 
 func _init(
 	type: Type,
 	name: String,
-	zoneRef: GS_Ref.Zone,
-	cardRef: GS_Ref.Card
+	index: int,
+	zoneRef: GSRef.Zone,
+	cardRef: GSRef.Card
 ):
 	self.type = type
 	self.name = name
+	self.index = index
 	self.zoneRef = zoneRef
 	self.cardRef = cardRef
-
-var type: Type
-var name: String
-var zoneRef: GS_Ref.Zone
-var cardRef: GS_Ref.Card
 
