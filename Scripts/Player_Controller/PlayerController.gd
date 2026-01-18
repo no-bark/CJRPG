@@ -4,6 +4,7 @@ extends Node
 var my_deck
 var my_hand
 var my_discard
+var my_active_zone
 
 #card factory so we don't have to control the library of cards or file i/o
 var my_factory
@@ -18,6 +19,10 @@ func _ready():
 	my_hand = get_node("Hand")
 	my_factory = get_node("CardFactory")
 	my_discard = get_node("Discard")
+	my_active_zone = get_node("ActiveZone")
+
+	#listening for when a hand card is clicked so we can send it to the active zone
+	my_hand.s_contained_card_clicked.connect(hand_card_clicked)
 
 	#starting deck set up
 	for n in StartingDeck:
@@ -73,5 +78,34 @@ func _input(_input_event):
 	#input: space
 	#effect: "Play" a card into discard
 	if(_input_event.is_action_pressed("discard_selected", false, true)):
-		if(!my_hand.cards.is_empty()):
+		if(my_active_zone.cards.size() > 0):
+			my_discard.add_card(my_active_zone.draw_selected())
+			my_hand.active = true
+
+		elif(!my_hand.cards.is_empty()):
 			my_discard.add_card(my_hand.draw_selected())
+
+	#input: right click
+	if(_input_event.is_action_pressed("deselect_card", false, true)):
+		if(my_active_zone.cards.size() > 0):
+			var active_drawn_card = my_active_zone.draw_selected()
+			if(active_drawn_card != null):
+				my_hand.add_card(active_drawn_card)
+			
+			my_hand.active = true
+
+func hand_card_clicked(clicked_card : card):
+	var active_drawn_card = null
+	if(my_active_zone.cards.size()> 0):
+		active_drawn_card = my_active_zone.draw_selected()
+
+	my_hand.active = false
+
+	print("Card clicked! Card: ", clicked_card.as_string())
+	my_hand.selectCard(clicked_card)
+	var drawn_card = my_hand.draw_selected()
+	print(drawn_card.as_string())
+	my_active_zone.add_card(drawn_card)
+
+	if(active_drawn_card != null):
+		my_hand.add_card(active_drawn_card)

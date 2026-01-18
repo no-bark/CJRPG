@@ -12,11 +12,29 @@ texture = ExtResource("1_ylwwy")
 script = ExtResource("2_y5kxg")
 
 [node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(3.39, 0)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 1
 theme = SubResource("Theme_rjlel")
+
+[node name="Button" type="Button" parent="Control"]
+custom_minimum_size = Vector2(800, 1100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -570.0
+offset_right = 380.0
+offset_bottom = 530.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
 
 [node name="Text" type="RichTextLabel" parent="Control"]
 layout_mode = 1
@@ -29,6 +47,7 @@ offset_left = 39.68
 offset_top = 625.4
 offset_right = -30.96
 offset_bottom = -33.6
+mouse_filter = 2
 text = "Rules Text"
 fit_content = true
 
@@ -43,6 +62,7 @@ offset_left = 48.68
 offset_top = 533.4
 offset_right = -21.96
 offset_bottom = -406.6
+mouse_filter = 2
 text = "Class"
 fit_content = true
 
@@ -57,6 +77,7 @@ offset_left = 39.68
 offset_top = 150.4
 offset_right = -611.96
 offset_bottom = -723.6
+mouse_filter = 2
 text = "10
 10"
 fit_content = true
@@ -72,5 +93,6 @@ offset_left = 41.68
 offset_top = 26.4
 offset_right = -28.96
 offset_bottom = -874.6
+mouse_filter = 2
 text = "Name"
 fit_content = true

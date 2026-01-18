@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://61loup2e8vq4"]
+
+[ext_resource type="Script" uid="uid://dxni274ly4l4m" path="res://Scripts/Character/Character.gd" id="1_dp6j8"]
+[ext_resource type="PackedScene" uid="uid://s6hgk603iua0" path="res://Scripts/Card_Mechanics/deck.tscn" id="2_dgye7"]
+[ext_resource type="Texture2D" uid="uid://c0nw0553by3o4" path="res://cardimages/page01.jpg" id="2_lq1ja"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dp6j8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(570, 220)
+texture = ExtResource("2_lq1ja")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.424
+anchor_right = 1.0
+anchor_bottom = 1.14
+offset_left = 202.0
+offset_top = -32.248
+offset_right = -212.0
+offset_bottom = 0.279907
+
+[node name="Control" parent="." instance=ExtResource("2_dgye7")]
+layout_mode = 1
