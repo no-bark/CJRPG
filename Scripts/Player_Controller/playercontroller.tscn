@@ -10,22 +10,42 @@
 script = ExtResource("1_4oh11")
 StartingDeck = Array[int]([16, 16, 16, 18, 18, 19, 19, 19, 22, 22, 22, 30, 30, 37, 37, 37, 63, 63, 63, 32, 32, 32, 42, 42, 42, 41, 41, 43, 43, 36])
 
-[node name="Deck" parent="." instance=ExtResource("2_xx2g2")]
+[node name="ActiveZone" parent="." instance=ExtResource("2_xx2g2")]
+z_index = 2
 anchors_preset = -1
-anchor_right = 1.014
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 336.0
+offset_right = 9.99805
+offset_bottom = 346.0
+cardScale = Vector2(0.5, 0.5)
+public = true
+backsideImage = ExtResource("3_b4rd0")
+
+[node name="Deck" parent="." instance=ExtResource("2_xx2g2")]
+z_index = -599
+anchors_preset = -1
+anchor_top = 1.165
+anchor_right = 0.0
 anchor_bottom = 1.165
-offset_left = -41.0
-offset_top = 612.0
-offset_right = -1199.13
-offset_bottom = -132.92
+offset_left = 55.0
+offset_top = -242.92
+offset_right = 64.998
+offset_bottom = -232.92
 cardScale = Vector2(0.2, 0.2)
 backsideImage = ExtResource("3_b4rd0")
 
 [node name="Hand" parent="." instance=ExtResource("2_xx2g2")]
-offset_left = 165.0
-offset_top = 599.0
-offset_right = -977.0
-offset_bottom = -39.0
+z_index = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.532
+offset_left = -411.0
+offset_top = -271.0
+offset_right = -437.864
+offset_bottom = -261.0
 cardScale = Vector2(0.3, 0.3)
 public = true
 active = true
@@ -35,10 +55,15 @@ backsideImage = ExtResource("3_b4rd0")
 position = Vector2(992, 4)
 
 [node name="Discard" parent="." instance=ExtResource("2_xx2g2")]
-offset_left = 1114.0
-offset_top = 577.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = -38.0
+offset_top = -71.0
 offset_right = -28.0
 offset_bottom = -61.0
+grow_horizontal = 0
+grow_vertical = 0
 cardScale = Vector2(0.2, 0.2)
 public = true
 backsideImage = ExtResource("3_b4rd0")
@@ -70,6 +95,7 @@ offset_right = 300.0
 offset_bottom = -256.0
 Starting_Value = 30
 
+[editable path="ActiveZone"]
 [editable path="Deck"]
 [editable path="Hand"]
 [editable path="Discard"]
